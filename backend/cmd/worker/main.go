@@ -1,1 +1,3 @@
-package worker
+package main
+
+func main() {}
