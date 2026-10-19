@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS submissions;
+DROP TABLE IF EXISTS milestones;
+DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS users;
+DROP FUNCTION IF EXISTS set_updated_at();
