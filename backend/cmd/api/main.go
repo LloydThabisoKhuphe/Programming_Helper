@@ -16,6 +16,8 @@ import (
 	"github.com/LloydThabisoKhuphe/Programming_Helper/backend/internal/config"
 	"github.com/LloydThabisoKhuphe/Programming_Helper/backend/internal/db"
 	"github.com/LloydThabisoKhuphe/Programming_Helper/backend/internal/httpapi"
+	"github.com/LloydThabisoKhuphe/Programming_Helper/backend/internal/projects"
+	"github.com/LloydThabisoKhuphe/Programming_Helper/backend/internal/submissions"
 )
 
 func main() {
@@ -40,9 +42,18 @@ func main() {
 	}
 	defer pool.Close()
 
+	handler := httpapi.New(
+		cfg,
+		pool,
+		auth.NewStore(pool, cfg.SessionTTL),
+		projects.NewStore(pool),
+		submissions.NewStore(pool),
+		logger,
+	)
+
 	srv := &http.Server{
 		Addr:              ":" + cfg.Port,
-		Handler:           httpapi.New(cfg, pool, auth.NewStore(pool, cfg.SessionTTL), logger),
+		Handler:           handler,
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       15 * time.Second,
 		WriteTimeout:      30 * time.Second,
